@@ -1,11 +1,4 @@
-/*! @file : sdk_hal_gpio.h
- * @author  Dayanna Feria
- * @version 1.0.0
- * @date    10/01/2021
- * @brief   Driver for GPIO
- * @details
- *
- */
+
 #ifndef SDK_HAL_GPIO_H_
 #define SDK_HAL_GPIO_H_
 /*******************************************************************************

@@ -1,11 +1,4 @@
-/*! @file : sdk_hal_gpio.c
- * @author  Dayanna Feria
- * @version 1.0.0
- * @date    10/01/2021
- * @brief   Driver for GPIO
- * @details
- *
-*/
+
 /*******************************************************************************
  * Includes
  ******************************************************************************/
@@ -181,4 +174,3 @@ status_t gpioPutToggle(uint16_t pin_to_change) {
 
 	return (kStatus_Success);
 }
-
