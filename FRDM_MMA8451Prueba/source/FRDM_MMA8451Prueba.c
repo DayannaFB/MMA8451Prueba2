@@ -21,6 +21,12 @@
 
 #define MMA8451_WHO_AM_I_MEMORY_ADDRESS		0x0D
 
+#define DatoX_MSB  0x01
+#define DatoX_LSB  0x02
+#define registro_CTRL_REG1 0x2A
+#define CTRL_REG_NEW 0x01
+
+
 /*******************************************************************************
  * Private Prototypes
  ******************************************************************************/
@@ -47,10 +53,16 @@
 int main(void) {
 	status_t status;
 	uint8_t nuevo_byte_uart;
-	uint8_t	nuevo_dato_i2c;
+	uint16_t	nuevo_dato_i2c;
+
+
+	uint16_t nuevo_dato_i2c_DatoX_MSB;
+	uint16_t nuevo_dato_i2c_DatoX_LSB;
+	uint16_t nuevo_dato_i2c_Dato1X;
+	uint16_t nuevo_dato_i2c_DatoX_Total;
 
   	/* Init board hardware. */
-    BOARD_InitBootPins();
+  BOARD_InitBootPins();
     BOARD_InitBootClocks();
     BOARD_InitBootPeripherals();
 #ifndef BOARD_INIT_DEBUG_CONSOLE_PERIPHERAL
@@ -102,6 +114,34 @@ int main(void) {
 						printf("MMA8451 error\r\n");
 
 					break;
+
+				case 'X':
+				case 'x':
+					i2c0MasterWriteByte(&nuevo_dato_i2c_Dato1X, MMA851_I2C_DEVICE_ADDRESS, registro_CTRL_REG1, CTRL_REG_NEW);
+					i2c0MasterReadByte(&nuevo_dato_i2c_DatoX_MSB, MMA851_I2C_DEVICE_ADDRESS, DatoX_MSB);
+					i2c0MasterReadByte(&nuevo_dato_i2c_DatoX_LSB, MMA851_I2C_DEVICE_ADDRESS, DatoX_LSB);
+					printf("Dato eje X MSB= %d\r\n",nuevo_dato_i2c_DatoX_MSB);
+					printf("Dato eje X LSB= %d\r\n",nuevo_dato_i2c_DatoX_LSB);
+
+					nuevo_dato_i2c_DatoX_MSB<<=8;
+					nuevo_dato_i2c_DatoX_Total = nuevo_dato_i2c_DatoX_MSB | nuevo_dato_i2c_DatoX_LSB;
+
+					printf("Dato eje X TOTAL= %d\r\n",nuevo_dato_i2c_DatoX_Total);
+
+
+					 break;
+				case 'Y':
+				case 'y':
+					i2c0MasterReadByte(&nuevo_dato_i2c, MMA851_I2C_DEVICE_ADDRESS, MMA8451_WHO_AM_I_MEMORY_ADDRESS);
+					printf("MMA8451 encontr\r\n");
+
+				     break;
+				case 'Z':
+				case 'z':
+					i2c0MasterReadByte(&nuevo_dato_i2c, MMA851_I2C_DEVICE_ADDRESS, MMA8451_WHO_AM_I_MEMORY_ADDRESS);
+					printf("MMA8451 encontrado!!\r\n");
+					break;
+
 				}
     		}else{
     			printf("error\r\n");
